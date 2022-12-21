@@ -1,9 +1,13 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const http = require('http');
+const app = express();
+const server = http.createServer(app);
+const fs = require('fs');
+const io = require('socket.io')(server);
 
-router.use(express.static('src'));
+app.use(express.static('src'));
 
-router.get('/', function(req, res){
+app.get('/', function(req, res){
     fs.readFile('./src/index.html', (err, data) => {
         if(err) throw err;
 
@@ -15,4 +19,8 @@ router.get('/', function(req, res){
     });
 });
 
-module.exports = router;
+io.sockets.on('connection', function(socket){ 
+
+});
+
+module.exports = app;
